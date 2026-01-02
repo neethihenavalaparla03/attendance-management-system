@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Attendance</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+        <h2>Attendance Report</h2>
+        <p class="subtitle">View your attendance percentage</p>
+
+        <label>Student ID</label>
+        <input type="number" id="studentId" placeholder="Enter your Student ID">
+
+        <button onclick="getAttendance()">View Attendance</button>
+
+        <div id="result" class="result"></div>
+    </div>
+</div>
+
+<script>
+function getAttendance() {
+    const id = document.getElementById("studentId").value;
+
+    fetch(`/attendance/${id}`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.length === 0) {
+                result.innerHTML = "<p class='error'>No attendance data found</p>";
+                return;
+            }
+
+            let html = "<table><tr><th>Subject</th><th>Attendance %</th></tr>";
+            data.forEach(item => {
+                html += `<tr>
+                            <td>${item.subject_name}</td>
+                            <td>${item.attendance_percentage}%</td>
+                         </tr>`;
+            });
+            html += "</table>";
+
+            result.innerHTML = html;
+        });
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,53 @@
+<<!DOCTYPE html>
+<html>
+<head>
+    <title>Faculty Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+    <div class="card">
+        <h2>Faculty Attendance</h2>
+        <p class="subtitle">Mark student attendance</p>
+
+        <label>Student ID</label>
+        <input type="number" id="studentId" placeholder="e.g. 1">
+
+        <label>Subject ID</label>
+        <input type="number" id="subjectId" placeholder="e.g. 1">
+
+        <label>Date</label>
+        <input type="date" id="date">
+
+        <label>Status</label>
+        <select id="status">
+            <option value="Present">Present</option>
+            <option value="Absent">Absent</option>
+        </select>
+
+        <button onclick="markAttendance()">Submit Attendance</button>
+
+        <p id="msg" class="message"></p>
+    </div>
+</div>
+
+<script>
+function markAttendance() {
+    fetch('/attendance/mark', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            student_id: studentId.value,
+            subject_id: subjectId.value,
+            date: date.value,
+            status: status.value
+        })
+    })
+    .then(res => res.json())
+    .then(data => msg.innerText = data.message);
+}
+</script>
+
+</body>
+</html>
